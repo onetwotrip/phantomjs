@@ -33,11 +33,13 @@ src_dir  = node['phantomjs']['src_dir']
 basename = node['phantomjs']['basename']
 checksum = node['phantomjs']['checksum']
 
+UA = { 'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36' }
 remote_file "#{src_dir}/#{basename}.tar.bz2" do
   owner     'root'
   group     'root'
   mode      '0644'
   backup    false
+  headers   UA
   source    "#{base_url}/#{basename}.tar.bz2"
   checksum  checksum if checksum
   not_if    { ::File.exists?('/usr/local/bin/phantomjs') && `/usr/local/bin/phantomjs --version`.chomp == version }
